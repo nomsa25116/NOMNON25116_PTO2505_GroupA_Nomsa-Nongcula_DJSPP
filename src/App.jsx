@@ -15,18 +15,10 @@ import { PodcastProvider } from "./context/PodcastContext";
  * @returns {JSX.Element} The root application element.
  */
 export default function App() {
-  const [theme, setTheme] = useState("light");
-
-  useEffect(() => {
+  const [theme, setTheme] = useState(() => {
     const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark" || savedTheme === "light") {
-      setTheme(savedTheme);
-      return;
-    }
-
-    const prefersDark = window.matchMedia?.("(prefers-color-scheme: dark)").matches;
-    setTheme(prefersDark ? "dark" : "light");
-  }, []);
+    return savedTheme === "dark" || savedTheme === "light" ? savedTheme : "light";
+  });
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark-mode", theme === "dark");
