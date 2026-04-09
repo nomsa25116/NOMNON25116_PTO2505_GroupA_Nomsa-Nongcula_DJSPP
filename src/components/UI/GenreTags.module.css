@@ -11,3 +11,8 @@
   display: inline-block;
   font-size: 0.8rem;
 }
+
+:global(.dark-mode) .tag {
+  background: #b8e6b8;
+  color: #1a1a1a;
+}

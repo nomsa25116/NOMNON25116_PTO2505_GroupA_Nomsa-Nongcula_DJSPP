@@ -7,6 +7,11 @@
   transition: transform 0.2s;
 }
 
+:global(.dark-mode) .card {
+  background: #3a3a3a;
+  color: #ffffff;
+}
+
 .card:hover {
   transform: scale(1.02);
 }
@@ -18,6 +23,10 @@
 
 .card h3 {
   margin: 0.5rem 0;
+}
+
+:global(.dark-mode) .card h3 {
+  color: #ffffff;
 }
 
 .card p {
