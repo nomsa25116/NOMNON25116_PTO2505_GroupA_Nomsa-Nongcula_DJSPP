@@ -4,3 +4,9 @@
   border-radius: 0.75rem;
   font-size: 1rem;
 }
+
+:global(.dark-mode) .select {
+  background-color: #b8e6b8;
+  border-color: #90d490;
+  color: #1a1a1a;
+}
