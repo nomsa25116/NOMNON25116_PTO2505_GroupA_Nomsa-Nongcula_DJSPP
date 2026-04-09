@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Header from "./components/UI/Header";
 import Home from "./pages/Home";
@@ -7,22 +8,45 @@ import { PodcastProvider } from "./context/PodcastContext";
 /**
  * Root component of the Podcast Explorer app.
  *
- * - Wraps the application in the `PodcastProvider` context for global state.
- * - Includes the `Header` component, displayed on all pages.
- * - Defines client-side routes using React Router:
- *    - "/" renders the `Home` page
- *    - "/show/:id" renders the `ShowDetail` page for a specific podcast
+ * - Wraps the application in `PodcastProvider` for global state.
+ * - Renders the `Header` with theme toggle controls.
+ * - Defines application routes for home and show detail pages.
  *
- * @returns {JSX.Element} The application component with routing and context.
+ * @returns {JSX.Element} The root application element.
  */
 export default function App() {
+  const [theme, setTheme] = useState("light");
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark" || savedTheme === "light") {
+      setTheme(savedTheme);
+      return;
+    }
+
+    const prefersDark = window.matchMedia?.("(prefers-color-scheme: dark)").matches;
+    setTheme(prefersDark ? "dark" : "light");
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark-mode", theme === "dark");
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  /**
+   * Toggle between light and dark themes.
+   */
+  const toggleTheme = () => {
+    setTheme((currentTheme) => (currentTheme === "dark" ? "light" : "dark"));
+  };
+
   return (
     <>
-      <Header />
+      <Header theme={theme} onToggleTheme={toggleTheme} />
       <PodcastProvider>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path={`/show/:id`} element={<ShowDetail />} />
+          <Route path="/show/:id" element={<ShowDetail />} />
         </Routes>
       </PodcastProvider>
     </>
