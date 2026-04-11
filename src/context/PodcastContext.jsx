@@ -46,6 +46,14 @@ export function PodcastProvider({ children }) {
   const [allPodcasts, setAllPodcasts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [favorites, setFavorites] = useState(() => {
+    try {
+      const saved = localStorage.getItem("favoriteEpisodes");
+      return saved ? JSON.parse(saved) : [];
+    } catch (err) {
+      return [];
+    }
+  });
 
   const [search, setSearch] = useState("");
   const [sortKey, setSortKey] = useState("date-desc");
@@ -59,6 +67,10 @@ export function PodcastProvider({ children }) {
   useEffect(() => {
     fetchPodcasts(setAllPodcasts, setError, setLoading);
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("favoriteEpisodes", JSON.stringify(favorites));
+  }, [favorites]);
 
   /**
    * Reset to the first page when filters change.
@@ -95,6 +107,23 @@ export function PodcastProvider({ children }) {
    *
    * @returns {Podcast[]} Filtered and sorted list of podcasts.
    */
+  const getEpisodeKey = (podcastId, seasonIndex, episodeIndex) =>
+    `${podcastId}_${seasonIndex}_${episodeIndex}`;
+
+  const toggleFavoriteEpisode = (podcastId, seasonIndex, episodeIndex) => {
+    const key = getEpisodeKey(podcastId, seasonIndex, episodeIndex);
+    setFavorites((current) =>
+      current.includes(key)
+        ? current.filter((favoriteKey) => favoriteKey !== key)
+        : [...current, key]
+    );
+  };
+
+  const isEpisodeFavorite = (podcastId, seasonIndex, episodeIndex) => {
+    const key = getEpisodeKey(podcastId, seasonIndex, episodeIndex);
+    return favorites.includes(key);
+  };
+
   const applyFilters = () => {
     let data = [...allPodcasts];
 
@@ -154,6 +183,9 @@ export function PodcastProvider({ children }) {
     podcasts: paged,
     allPodcastsCount: filtered.length,
     allPodcasts, // useful for detail pages
+    favorites,
+    toggleFavoriteEpisode,
+    isEpisodeFavorite,
   };
 
   return (

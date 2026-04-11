@@ -156,6 +156,33 @@ strong {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   border-color: #d1d5db;
 }
+
+.favoriteButton {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: transform 0.2s ease, color 0.2s ease, background 0.2s ease;
+  color: #a1a1aa;
+}
+
+.favoriteButton:hover {
+  transform: scale(1.05);
+  color: #ef4444;
+}
+
+.favorited {
+  color: #ef4444;
+  background: transparent;
+}
+
+.favoriteIcon {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
 .episodeInfo {
   margin-left: 10px;
 }

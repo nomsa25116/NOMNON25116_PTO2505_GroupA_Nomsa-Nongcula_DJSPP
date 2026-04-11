@@ -1,13 +1,15 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom"; // ← add this
 import styles from "./PodcastDetail.module.css";
 import { formatDate } from "../../utils/formatDate";
 import GenreTags from "../UI/GenreTags";
+import { PodcastContext } from "../../context/PodcastContext";
 
 export default function PodcastDetail({ podcast, genres }) {
   const [selectedSeasonIndex, setSelectedSeasonIndex] = useState(0);
   const season = podcast.seasons[selectedSeasonIndex];
   const navigate = useNavigate(); // ← hook for navigation
+  const { toggleFavoriteEpisode, isEpisodeFavorite } = useContext(PodcastContext);
 
   return (
     <div className={styles.container}>
@@ -84,17 +86,39 @@ export default function PodcastDetail({ podcast, genres }) {
         </div>
 
         <div className={styles.episodeList}>
-          {season.episodes.map((ep, index) => (
-            <div key={index} className={styles.episodeCard}>
-              <img className={styles.episodeCover} src={season.image} alt="" />
-              <div className={styles.episodeInfo}>
-                <p className={styles.episodeTitle}>
-                  Episode {index + 1}: {ep.title}
-                </p>
-                <p className={styles.episodeDesc}>{ep.description}</p>
+          {season.episodes.map((ep, index) => {
+            const isFavorite = isEpisodeFavorite(podcast.id, selectedSeasonIndex, index);
+            return (
+              <div key={index} className={styles.episodeCard}>
+                <img className={styles.episodeCover} src={season.image} alt="" />
+                <div className={styles.episodeInfo}>
+                  <p className={styles.episodeTitle}>
+                    Episode {index + 1}: {ep.title}
+                  </p>
+                  <p className={styles.episodeDesc}>{ep.description}</p>
+                </div>
+                <button
+                  type="button"
+                  className={`${styles.favoriteButton} ${
+                    isFavorite ? styles.favorited : ""
+                  }`}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    toggleFavoriteEpisode(podcast.id, selectedSeasonIndex, index);
+                  }}
+                  aria-label={
+                    isFavorite
+                      ? "Remove episode from favourites"
+                      : "Add episode to favourites"
+                  }
+                >
+                  <span className={styles.favoriteIcon}>
+                    {isFavorite ? "♥" : "♡"}
+                  </span>
+                </button>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>
