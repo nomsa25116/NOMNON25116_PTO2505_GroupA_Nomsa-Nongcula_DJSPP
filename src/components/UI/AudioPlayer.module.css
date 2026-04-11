@@ -1,0 +1,61 @@
+.playerBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+  background: rgba(246, 247, 251, 0.95);
+  border-top: 1px solid rgba(17, 24, 39, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 -8px 24px rgba(10, 15, 35, 0.08);
+  backdrop-filter: blur(10px);
+  z-index: 50;
+}
+
+.trackInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.trackTitle {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.trackMeta {
+  margin-top: 0.2rem;
+  font-size: 0.82rem;
+  color: var(--grey-text);
+}
+
+.noTrack {
+  color: var(--grey-text);
+  font-size: 0.92rem;
+}
+
+.audioPlayer {
+  width: 340px;
+  max-width: 100%;
+  min-width: 220px;
+  border-radius: 1rem;
+  background: var(--surface-bg);
+  color: var(--text-color);
+}
+
+:global(.dark-mode) .playerBar {
+  background: rgba(17, 24, 39, 0.95);
+  border-top-color: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 -8px 24px rgba(0, 0, 0, 0.35);
+}
+
+:global(.dark-mode) .audioPlayer {
+  background: #b8e6b8;
+  color: #1a1a1a;
+}

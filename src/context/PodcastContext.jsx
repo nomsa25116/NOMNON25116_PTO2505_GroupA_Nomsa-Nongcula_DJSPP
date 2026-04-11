@@ -33,6 +33,17 @@ export const SORT_OPTIONS = [
 ];
 
 /**
+ * @typedef {Object} Track
+ * @property {string} src - Audio source URL.
+ * @property {string} episodeTitle - Episode title displayed in the player.
+ * @property {string} podcastTitle - Podcast title displayed in the player.
+ * @property {string} seasonTitle - Season label displayed in the player.
+ * @property {number} podcastId - Identifier for the parent podcast.
+ * @property {number} seasonIndex - Season index for the currently playing episode.
+ * @property {number} episodeIndex - Episode index for the currently playing episode.
+ */
+
+/**
  * PodcastProvider component.
  *
  * Wraps child components and provides podcast-related data and control state via context.
@@ -54,6 +65,9 @@ export function PodcastProvider({ children }) {
       return [];
     }
   });
+
+  const [currentTrack, setCurrentTrack] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const [search, setSearch] = useState("");
   const [sortKey, setSortKey] = useState("date-desc");
@@ -108,9 +122,24 @@ export function PodcastProvider({ children }) {
    *
    * @returns {Podcast[]} Filtered and sorted list of podcasts.
    */
+  /**
+   * Create a stable key for an episode so favorites can be stored consistently.
+   *
+   * @param {number} podcastId - Podcast identifier.
+   * @param {number} seasonIndex - Season index for the episode.
+   * @param {number} episodeIndex - Episode index within the season.
+   * @returns {string} Unique episode key.
+   */
   const getEpisodeKey = (podcastId, seasonIndex, episodeIndex) =>
     `${podcastId}_${seasonIndex}_${episodeIndex}`;
 
+  /**
+   * Toggle favorite status for a specific episode.
+   *
+   * @param {number} podcastId - Podcast identifier.
+   * @param {number} seasonIndex - Season index for the episode.
+   * @param {number} episodeIndex - Episode index within the season.
+   */
   const toggleFavoriteEpisode = (podcastId, seasonIndex, episodeIndex) => {
     const key = getEpisodeKey(podcastId, seasonIndex, episodeIndex);
     setFavorites((current) =>
@@ -118,6 +147,32 @@ export function PodcastProvider({ children }) {
         ? current.filter((favoriteKey) => favoriteKey !== key)
         : [...current, key]
     );
+  };
+
+  /**
+   * Start or resume playback for the selected episode.
+   *
+   * @param {Track} track - Track metadata and audio source.
+   */
+  const playEpisode = ({
+    src,
+    episodeTitle,
+    podcastTitle,
+    seasonTitle,
+    podcastId,
+    seasonIndex,
+    episodeIndex,
+  }) => {
+    setCurrentTrack({
+      src,
+      episodeTitle,
+      podcastTitle,
+      seasonTitle,
+      podcastId,
+      seasonIndex,
+      episodeIndex,
+    });
+    setIsPlaying(true);
   };
 
   const isEpisodeFavorite = (podcastId, seasonIndex, episodeIndex) => {
@@ -199,6 +254,10 @@ export function PodcastProvider({ children }) {
     setFavoriteFilter,
     toggleFavoriteEpisode,
     isEpisodeFavorite,
+    currentTrack,
+    isPlaying,
+    setIsPlaying,
+    playEpisode,
   };
 
   return (

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Header from "./components/UI/Header";
+import AudioPlayer from "./components/UI/AudioPlayer";
 import Home from "./pages/Home";
 import ShowDetail from "./pages/ShowDetail";
 import { PodcastProvider } from "./context/PodcastContext";
@@ -11,6 +12,7 @@ import { PodcastProvider } from "./context/PodcastContext";
  * - Wraps the application in `PodcastProvider` for global state.
  * - Renders the `Header` with theme toggle controls.
  * - Defines application routes for home and show detail pages.
+ * - Includes a persistent audio player that remains mounted across route changes.
  *
  * @returns {JSX.Element} The root application element.
  */
@@ -36,10 +38,13 @@ export default function App() {
     <>
       <Header theme={theme} onToggleTheme={toggleTheme} />
       <PodcastProvider>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/show/:id" element={<ShowDetail />} />
-        </Routes>
+        <div style={{ paddingBottom: "6rem" }}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/show/:id" element={<ShowDetail />} />
+          </Routes>
+          <AudioPlayer />
+        </div>
       </PodcastProvider>
     </>
   );

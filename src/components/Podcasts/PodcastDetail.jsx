@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom"; // ← add this
+import { useNavigate } from "react-router-dom";
 import styles from "./PodcastDetail.module.css";
 import { formatDate } from "../../utils/formatDate";
 import GenreTags from "../UI/GenreTags";
@@ -26,8 +26,14 @@ import { PodcastContext } from "../../context/PodcastContext";
 export default function PodcastDetail({ podcast, genres }) {
   const [selectedSeasonIndex, setSelectedSeasonIndex] = useState(0);
   const season = podcast.seasons[selectedSeasonIndex];
-  const navigate = useNavigate(); // ← hook for navigation
-  const { toggleFavoriteEpisode, isEpisodeFavorite } = useContext(PodcastContext);
+  const navigate = useNavigate();
+  const {
+    toggleFavoriteEpisode,
+    isEpisodeFavorite,
+    playEpisode,
+    currentTrack,
+    isPlaying,
+  } = useContext(PodcastContext);
 
   return (
     <div className={styles.container}>
@@ -114,14 +120,35 @@ export default function PodcastDetail({ podcast, genres }) {
                     Episode {index + 1}: {ep.title}
                   </p>
                   <p className={styles.episodeDesc}>{ep.description}</p>
-                  <audio
-                    controls
-                    preload="none"
-                    src={ep.file}
-                    className={styles.audioPlayer}
+                  <button
+                    type="button"
+                    className={`${styles.playButton} ${
+                      currentTrack?.podcastId === podcast.id &&
+                      currentTrack?.seasonIndex === selectedSeasonIndex &&
+                      currentTrack?.episodeIndex === index
+                        ? styles.playing
+                        : ""
+                    }`}
+                    onClick={() =>
+                      playEpisode({
+                        src: ep.file,
+                        episodeTitle: ep.title,
+                        podcastTitle: podcast.title,
+                        seasonTitle: `Season ${selectedSeasonIndex + 1}`,
+                        podcastId: podcast.id,
+                        seasonIndex: selectedSeasonIndex,
+                        episodeIndex: index,
+                      })
+                    }
                   >
-                    Your browser does not support the audio element.
-                  </audio>
+                    {currentTrack?.podcastId === podcast.id &&
+                    currentTrack?.seasonIndex === selectedSeasonIndex &&
+                    currentTrack?.episodeIndex === index
+                      ? isPlaying
+                        ? "Playing"
+                        : "Resume"
+                      : "Play episode"}
+                  </button>
                 </div>
                 <button
                   type="button"
