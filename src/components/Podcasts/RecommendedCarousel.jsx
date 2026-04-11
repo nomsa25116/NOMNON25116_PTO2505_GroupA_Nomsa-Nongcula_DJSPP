@@ -1,4 +1,4 @@
-import { useContext, useRef } from "react";
+import { useContext, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { PodcastContext } from "../../context/PodcastContext";
 import GenreTags from "../UI/GenreTags";
@@ -26,9 +26,21 @@ export default function RecommendedCarousel() {
    */
   const scroll = (direction) => {
     if (!carouselRef.current) return;
-    const offset = carouselRef.current.offsetWidth * 0.8;
-    carouselRef.current.scrollBy({
-      left: direction === "left" ? -offset : offset,
+    const carousel = carouselRef.current;
+    const offset = carousel.offsetWidth * 0.8;
+    const itemWidth = 220 + 16;
+    const setWidth = visibleShows.length * itemWidth;
+    let newScroll = carousel.scrollLeft + (direction === "left" ? -offset : offset);
+
+    // Adjust for endless loop
+    if (newScroll < setWidth) {
+      newScroll += setWidth;
+    } else if (newScroll >= 2 * setWidth) {
+      newScroll -= setWidth;
+    }
+
+    carousel.scrollTo({
+      left: newScroll,
       behavior: "smooth",
     });
   };
@@ -44,6 +56,34 @@ export default function RecommendedCarousel() {
     navigate(`/show/${podcast.id}`, { state: { genres: podcast.genres } });
   };
 
+  /**
+   * Sets up endless scrolling behavior for the carousel by duplicating content
+   * and managing scroll position to create a seamless loop.
+   */
+  useEffect(() => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+
+    const itemWidth = 220 + 16; // card width + gap
+    const setWidth = visibleShows.length * itemWidth;
+
+    // Set initial scroll to the middle set
+    carousel.scrollLeft = setWidth;
+
+    const handleScroll = () => {
+      const { scrollLeft } = carousel;
+
+      if (scrollLeft >= 2 * setWidth) {
+        carousel.scrollLeft = setWidth;
+      } else if (scrollLeft <= 0) {
+        carousel.scrollLeft = setWidth;
+      }
+    };
+
+    carousel.addEventListener('scroll', handleScroll);
+    return () => carousel.removeEventListener('scroll', handleScroll);
+  }, [visibleShows]);
+
   if (!visibleShows.length) return null;
 
   return (
@@ -51,7 +91,6 @@ export default function RecommendedCarousel() {
       <div className={styles.headingRow}>
         <div>
           <h2>Shows you may like</h2>
-          <p>Browse featured shows with image, title, and genre tags.</p>
         </div>
       </div>
 
@@ -65,9 +104,9 @@ export default function RecommendedCarousel() {
           ‹
         </button>
         <div className={styles.carousel} ref={carouselRef}>
-        {visibleShows.map((podcast) => (
+        {[...visibleShows, ...visibleShows, ...visibleShows].map((podcast, index) => (
           <article
-            key={podcast.id}
+            key={`${podcast.id}-${index}`}
             className={styles.showCard}
             onClick={() => handleShowClick(podcast)}
             tabIndex={0}
