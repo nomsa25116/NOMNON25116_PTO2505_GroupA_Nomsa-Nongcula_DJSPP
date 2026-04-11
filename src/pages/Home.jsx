@@ -9,6 +9,7 @@ import {
   FavoriteEpisodes,
 } from "../components";
 import FavoriteFilter from "../components/Filters/FavoriteFilter";
+import RecommendedCarousel from "../components/Podcasts/RecommendedCarousel";
 import styles from "./Home.module.css";
 import { genres } from "../data";
 import { PodcastContext } from "../context/PodcastContext";
@@ -44,14 +45,17 @@ export default function Home() {
         <Error message={`Error occurred while fetching podcasts: ${error}`} />
       )}
 
-      {!loading && !error && favoriteFilter === "favourites" && (
-        <FavoriteEpisodes />
-      )}
-
-      {!loading && !error && favoriteFilter !== "favourites" && (
+      {!loading && !error && (
         <>
-          <PodcastGrid />
-          <Pagination />
+          <RecommendedCarousel />
+          {favoriteFilter === "favourites" ? (
+            <FavoriteEpisodes />
+          ) : (
+            <>
+              <PodcastGrid />
+              <Pagination />
+            </>
+          )}
         </>
       )}
     </main>
