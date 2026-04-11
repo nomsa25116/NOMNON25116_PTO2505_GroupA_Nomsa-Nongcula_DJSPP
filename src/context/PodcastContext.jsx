@@ -58,6 +58,7 @@ export function PodcastProvider({ children }) {
   const [search, setSearch] = useState("");
   const [sortKey, setSortKey] = useState("date-desc");
   const [genre, setGenre] = useState("all");
+  const [favoriteFilter, setFavoriteFilter] = useState("all");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
 
@@ -77,7 +78,7 @@ export function PodcastProvider({ children }) {
    */
   useEffect(() => {
     setPage(1);
-  }, [search, sortKey, genre]);
+  }, [search, sortKey, genre, favoriteFilter]);
 
   /**
    * Dynamically calculate the number of items per page based on screen width.
@@ -136,6 +137,16 @@ export function PodcastProvider({ children }) {
       data = data.filter((p) => p.genres.includes(Number(genre)));
     }
 
+    if (favoriteFilter === "favorites") {
+      data = data.filter((podcast) =>
+        podcast.seasons.some((season, seasonIndex) =>
+          season.episodes.some((episode, episodeIndex) =>
+            favorites.includes(getEpisodeKey(podcast.id, seasonIndex, episodeIndex))
+          )
+        )
+      );
+    }
+
     switch (sortKey) {
       case "title-asc":
         data.sort((a, b) => a.title.localeCompare(b.title));
@@ -184,6 +195,8 @@ export function PodcastProvider({ children }) {
     allPodcastsCount: filtered.length,
     allPodcasts, // useful for detail pages
     favorites,
+    favoriteFilter,
+    setFavoriteFilter,
     toggleFavoriteEpisode,
     isEpisodeFavorite,
   };

@@ -6,7 +6,9 @@ import {
   Pagination,
   Loading,
   Error,
+  FavoriteEpisodes,
 } from "../components";
+import FavoriteFilter from "../components/Filters/FavoriteFilter";
 import styles from "./Home.module.css";
 import { genres } from "../data";
 import { PodcastContext } from "../context/PodcastContext";
@@ -26,7 +28,7 @@ import { useContext } from "react";
  * @returns {JSX.Element} The home page content with filters, results, and feedback states.
  */
 export default function Home() {
-  const { podcasts, loading, error } = useContext(PodcastContext);
+  const { podcasts, loading, error, favoriteFilter } = useContext(PodcastContext);
 
   return (
     <main className={styles.main}>
@@ -34,6 +36,7 @@ export default function Home() {
         <SearchBar />
         <GenreFilter genres={genres} />
         <SortSelect />
+        <FavoriteFilter />
       </section>
 
       {loading && <Loading message="Loading podcasts..." />}
@@ -41,7 +44,11 @@ export default function Home() {
         <Error message={`Error occurred while fetching podcasts: ${error}`} />
       )}
 
-      {!loading && !error && (
+      {!loading && !error && favoriteFilter === "favourites" && (
+        <FavoriteEpisodes />
+      )}
+
+      {!loading && !error && favoriteFilter !== "favourites" && (
         <>
           <PodcastGrid />
           <Pagination />
