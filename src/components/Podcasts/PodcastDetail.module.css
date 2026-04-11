@@ -209,6 +209,23 @@ strong {
   transform-origin: top;
 }
 
+:global(.dark-mode) .audioPlayer {
+  background-color: #b8e6b8;
+  color: #1a1a1a;
+}
+
+:global(.dark-mode) .audioPlayer::-webkit-media-controls-panel {
+  background-color: #b8e6b8;
+}
+
+:global(.dark-mode) .audioPlayer::-webkit-media-controls-time-remaining-display {
+  color: #1a1a1a;
+}
+
+:global(.dark-mode) .audioPlayer::-webkit-media-controls-current-time-display {
+  color: #1a1a1a;
+}
+
 .episodeTitle {
   font-weight: bold;
   font-size: 0.95rem;
