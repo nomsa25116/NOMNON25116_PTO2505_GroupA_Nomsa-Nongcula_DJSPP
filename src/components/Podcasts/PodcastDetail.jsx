@@ -5,6 +5,24 @@ import { formatDate } from "../../utils/formatDate";
 import GenreTags from "../UI/GenreTags";
 import { PodcastContext } from "../../context/PodcastContext";
 
+/**
+ * Displays detailed information for a single podcast with all its seasons and episodes.
+ *
+ * Features:
+ * - Shows podcast metadata (title, description, cover image, genres, update date).
+ * - Lists all seasons with episode counts.
+ * - Displays episodes for the selected season with audio playback, descriptions, and favorite toggle.
+ * - Audio players are integrated for each episode using the placeholder API audio files.
+ * - Supports adding/removing episodes from favorites.
+ * - Allows back navigation.
+ *
+ * @component
+ * @param {Object} props - Component props.
+ * @param {Object} props.podcast - The podcast object containing id, title, description, image, seasons, etc.
+ * @param {Array<number>} props.genres - Array of genre IDs to display as tags.
+ *
+ * @returns {JSX.Element} The podcast detail view with seasons, episodes, and audio players.
+ */
 export default function PodcastDetail({ podcast, genres }) {
   const [selectedSeasonIndex, setSelectedSeasonIndex] = useState(0);
   const season = podcast.seasons[selectedSeasonIndex];
@@ -96,6 +114,14 @@ export default function PodcastDetail({ podcast, genres }) {
                     Episode {index + 1}: {ep.title}
                   </p>
                   <p className={styles.episodeDesc}>{ep.description}</p>
+                  <audio
+                    controls
+                    preload="none"
+                    src={ep.file}
+                    className={styles.audioPlayer}
+                  >
+                    Your browser does not support the audio element.
+                  </audio>
                 </div>
                 <button
                   type="button"

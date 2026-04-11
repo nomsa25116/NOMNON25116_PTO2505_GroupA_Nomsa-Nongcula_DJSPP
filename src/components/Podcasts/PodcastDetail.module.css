@@ -197,6 +197,18 @@ strong {
   margin-left: 10px;
 }
 
+.audioPlayer {
+  width: 50%;
+  margin-top: 0.75rem;
+  border-radius: 0.5rem;
+  background: var(--surface-bg);
+  color: var(--text-color);
+  height: 28px;
+  font-size: 0.85rem;
+  transform: scaleY(0.8);
+  transform-origin: top;
+}
+
 .episodeTitle {
   font-weight: bold;
   font-size: 0.95rem;
