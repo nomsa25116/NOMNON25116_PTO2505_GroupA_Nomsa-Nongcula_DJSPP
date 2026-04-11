@@ -2,6 +2,7 @@
   max-width: 1000px;
   margin: 0 auto;
   padding: 2rem;
+  color: var(--text-color);
 }
 
 strong {
@@ -11,16 +12,16 @@ strong {
 .header {
   display: flex;
   gap: 2rem;
-  background: white;
+  background: var(--header-bg);
   padding: 2rem;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow);
   margin-bottom: 2rem;
 }
 .backButton {
   background: none;
   border: none;
-  color: #333;
+  color: var(--text-color);
   font-size: 1rem;
   cursor: pointer;
   margin-bottom: 1rem;
@@ -49,7 +50,7 @@ strong {
 }
 
 .description {
-  color: #444;
+  color: var(--grey-text);
   margin-bottom: 1rem;
 }
 
@@ -61,7 +62,7 @@ strong {
 }
 
 .genreBadge {
-  background-color: #e5e7eb;
+  background-color: var(--surface-bg);
   padding: 0.3rem 0.75rem;
   border-radius: 9999px;
   font-size: 0.85rem;
@@ -69,7 +70,7 @@ strong {
 
 .metaInfo p {
   font-size: 0.875rem;
-  color: #555;
+  color: var(--grey-text);
   margin: 0.25rem 0;
 }
 
@@ -86,10 +87,11 @@ strong {
 }
 
 .seasonDetails {
-  background: white;
+  background: var(--card-bg);
   padding: 2rem;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-color);
 }
 
 .seasonIntro {
@@ -110,11 +112,19 @@ strong {
 .dropdown {
   padding: 0.4rem 0.6rem;
   border-radius: 4px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
+  background: #eee;
+  color: var(--text-color);
   min-width: 140px;
   height: 40px;
   order: 2;
 }
+
+:global(.dark-mode) .dropdown {
+  background: #b8e6b8;
+  color: #1a1a1a;
+}
+
 
 .seasonCover,
 .episodeCover {
@@ -130,7 +140,7 @@ strong {
 }
 
 .releaseInfo {
-  color: #777;
+  color: var(--grey-text);
   font-size: 0.875rem;
   margin-top: 0.5rem;
 }
@@ -143,18 +153,18 @@ strong {
 
 .episodeCard {
   display: flex;
-  background: #f9fafb;
+  background: var(--surface-bg);
   padding: 1rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
   border-radius: 6px;
   transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .episodeCard:hover {
   transform: translateY(-4px);
-  background: #ffffff;
+  background: var(--card-bg);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  border-color: #d1d5db;
+  border-color: var(--border-color);
 }
 
 .favoriteButton {
@@ -165,7 +175,7 @@ strong {
   padding: 0.5rem;
   border-radius: 50%;
   transition: transform 0.2s ease, color 0.2s ease, background 0.2s ease;
-  color: #a1a1aa;
+  color: var(--grey-text);
 }
 
 .favoriteButton:hover {
@@ -192,10 +202,11 @@ strong {
   font-size: 0.95rem;
   margin-bottom: 0.25rem;
   margin-top: 0px;
+  color: var(--text-color);
 }
 
 .episodeDesc {
-  color: #555;
+  color: var(--grey-text);
   font-size: 0.875rem;
 }
 
