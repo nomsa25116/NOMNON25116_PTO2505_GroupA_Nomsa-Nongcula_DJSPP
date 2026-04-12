@@ -1,94 +1,79 @@
-# DJS05 – React Podcast App with Routing, Detail Pages, and Context State
+# DJSPP -🎧 Podcast Explorer App (React Routing, Context API, Audio Player)
 
-This project is a **React-based podcast explorer** that builds upon DJS04 by adding **multi-page routing**, **podcast detail views**, and further improving the use of shared context state and component organization.
+# 📌👉 Live Demo: https://nomnon-25116-pto-2505-group-a-nomsa.vercel.app/
 
-## Key Features
+This project is a React-based podcast explorer application that builds on core frontend development concepts such as routing, global state management, dynamic rendering, and UI persistence.
 
-- **Routing (React Router DOM)**  
-  Uses `react-router-dom` for navigation between pages:
+It enhances user experience by introducing episode favourites, a global audio player, dark mode toggle, and improved navigation flow between podcast content.
 
-  - `/` – Home page with search, filters, sorting, and pagination
-  - `/show/:id` – Detailed view of a selected podcast, including episode listing
+## ✨ Key Features
+**🧭 Routing (React Router DOM)**
 
-- **Podcast Context (Global State)**  
-  Provides shared state using `PodcastContext`:
+Uses react-router-dom for navigation between pages:
+/ – Home page with all podcasts, search, filters, and sorting
+/show/:id – Dynamic podcast detail page showing seasons and episodes
 
-  - Manages full podcast dataset, filters, search, sort, pagination
-  - Makes data accessible across pages
+# 🎧 Global Audio Player
+Persistent audio player across all pages
+Continuous playback while navigating the app
 
-- **Search**
+# ⭐ Favourites System
+-Mark episodes as favourites
+-Stored globally using Context API
 
-  - Case-insensitive search by podcast title
-  - Updates results dynamically
+# 🌗 Dark Mode Toggle
+-Light / dark theme switching
+-Saved in localStorage
+-Applies globally across the app
 
-- **Sort Options**
+# 🔍 Search & Filtering
+-Case-insensitive podcast search
+-Dynamic filtering of results
+-Improves content discovery
 
-  - Default
-  - Newest
-  - Oldest
-  - Title A → Z
-  - Title Z → A
+# 📺 Show Detail View
+-Dynamic route /show/:id
+-Displays seasons and episodes
 
-- **Genre Filter**
+# 🧠 State Management (Context API)
+The application uses PodcastContext for global state:
+-Podcast data management
+-Search and filter logic
+-Shared state across components
 
-  - Filters podcasts by genre
-  - Genre data loaded from static source
+# 🔁 Application Flow
+-Podcast data loads into global context on app start
+-Home page displays all podcasts with search and filters
+-Clicking a podcast opens /show/:id
+-Users can favourite episodes from show pages
+-Audio player continues working across all routes
 
-- **Pagination**
+# 🚀 How to Run the Project
 
-  - Dynamic per-page item calculation based on screen size
-  - Defaults to 10 per page on smaller screens
+1. Clone the repository - git clone <your-repo-link>
 
-- **Detail View**
-  - Fetches full podcast data when visiting `/show/:id`
-  - Displays title, image, description, genre tags, and seasons
+2. Navigate into the project - cd podcast-explorer
 
-## Project Structure
+3. Install dependencies - npm install
+   
+4. Start development server - npm run dev
+   
+5. Open in browser - http://localhost:5173
 
-```
-/src
-│
-├── /api
-│ └── fetchPata.js # Fetch podcasts and single podcast
-│
-├── /components
-│ ├── Filters/ # SearchBar, SortSelect, GenreFilter
-│ ├── Podcasts/ # PodcastCard, PodcastGrid, PodcastDetail
-│ └── UI/ # Header, Pagination, Loading, Error, GenreTags
-│
-├── /context
-│ └── PodcastContext.jsx # Context provider for global state
-|
-├── /pages
-│ ├── Home.jsx # Home page with all podcasts and controls
-│ └── ShowDetail.jsx # Detail view for a selected podcast
-│
-├── /styles
-│ └── \*.module.css # CSS Modules used throughout
-│
-├── App.jsx # Main app with routing
-└── main.jsx # React entry point
-└── data.js # Static genre ID to label mapping
-```
+# 🌐 Deployment
 
-## How It Works
+This project is deployed using Vercel:
 
-- On initial load, all podcast data is fetched once via `PodcastProvider`.
-- Components like `SearchBar`, `GenreFilter`, and `SortSelect` update shared context state.
-- Filtered and sorted results are paginated and displayed in `PodcastGrid`.
-- When a podcast card is clicked, the app navigates to `/show/:id`, fetching full podcast details.
+**Steps**:
+1. Push project to GitHub
+2. Import repository into Vercel
+3. Deploy using default React/Vite settings
 
-## How to Run
-
-1. Clone the repo or download the project files.
-2. Install dependencies:
-
-   ```bash
-   npm install
-   ```
-
-3. Start the development server:
-   ```
-    npm run dev
-   ```
-4. Visit http://localhost:5173 in your browser.
+# 🎯 Key Learning Outcomes
+-Component-based React architecture
+-React Router DOM navigation
+-Context API global state management
+-Persistent UI state using localStorage
+-Audio player integration across routes
+-Real-world frontend UX design patterns
+-Deployment workflow using Vercel
